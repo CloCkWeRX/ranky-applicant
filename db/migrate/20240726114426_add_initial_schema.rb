@@ -13,12 +13,12 @@ class AddInitialSchema < ActiveRecord::Migration[7.1]
     end
 
     create_table :job_seekers do |t|
-      t.string :name
+      t.string :name, null: false
     end
 
     create_table :job_seeker_skills do |t|
       t.references :job_seeker
-      t.string :skill
+      t.string :skill, null: false
 
       t.index :skill
     end
