@@ -21,4 +21,5 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'factory_bot'
   gem 'rspec'
+  gem 'rspec-rails'
 end
