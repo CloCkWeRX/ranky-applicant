@@ -4,5 +4,5 @@
 #
 # Approximately logical model as https://schema.org/skills
 class JobSkill < ApplicationRecord
-    belongs_to :job
+  belongs_to :job
 end
