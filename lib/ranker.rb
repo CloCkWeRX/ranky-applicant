@@ -16,10 +16,15 @@ class Ranker
   end
 
   def ranked_jobs_by_job_seeker
-    # Initial, iterative approach.
-    # Later refactor to SELECT (job seeker skills) INTERSECT (job skills) ORDER BY COUNT(job_seeker_id) DESC or similar
-    job_seekers = JobSeeker.all
-    puts job_seekers
+    # Identify all skills where there is an overlap at all
+    # TODO: Change to a left join if "0% overlap" is required
+    sql = "SELECT 
+        COUNT(0), job_skills.job_id, job_seeker_skills.job_seeker_id
+    FROM job_seeker_skills
+    JOIN job_skills ON job_seeker_skills.skill = job_skills.skill
+    GROUP BY job_skills.job_id"
+    job_seekers = ActiveRecord::Base.connection.select_all(sql).rows
+    puts job_seekers.inspect
 
     # jobseeker_id, jobseeker_name, job_id, job_title, matching_skill_count, matching_skill_percent
     # 1, Alice, 5, Ruby Developer, 3, 100

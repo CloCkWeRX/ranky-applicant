@@ -4,7 +4,7 @@
 #
 # Has one or more "skills"
 class JobSeeker < ApplicationRecord
-  has_many :job_seeker_skills
+  has_many :job_seeker_skills, dependent: :destroy
 
   validates :name, presence: true
 end

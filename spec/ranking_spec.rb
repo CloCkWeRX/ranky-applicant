@@ -14,6 +14,13 @@ describe 'Application Output' do
         CSV.read('./spec/test_data/jobseekers.csv', headers: true)
       end
       before do
+        # Reset to blank slate
+        Job.delete_all
+        JobSeeker.delete_all
+        JobSkill.delete_all
+        JobSeekerSkill.delete_all
+
+        # Seed test data
         jobs_data.each do |row|
           # TODO: Go make some kind of parsing/mapping rake task or lib/*
           job = Job.create!(name: row['title'])

@@ -8,7 +8,7 @@
 # Loosely, this is the same logical model as https://www.abs.gov.au/statistics/classifications/anzsco-australian-and-new-zealand-standard-classification-occupations/latest-release
 # or https://schema.org/JobPosting
 class Job < ApplicationRecord
-  has_many :job_skills
+  has_many :job_skills, dependent: :destroy
 
   validates :name, presence: true
 end
