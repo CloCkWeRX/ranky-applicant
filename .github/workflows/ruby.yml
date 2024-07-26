@@ -15,8 +15,8 @@ jobs:
         with:
           bundler-cache: true
 
-      # - name: Prepare database for testing
-      #   run: bundle exec rails db:prepare
+      - name: Prepare database for testing
+        run: bundle exec rails db:prepare
 
       - name: Run rspec
         run: bundle exec rspec spec -fd
