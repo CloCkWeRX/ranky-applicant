@@ -9,14 +9,25 @@ describe 'Application Output' do
         CSV.read('./spec/test_data/jobs.csv', headers: true)
       end
       let(:job_seekers_data) do
-        CSV.read('./spec/test_data/job_seekers.csv', headers: true)
+        CSV.read('./spec/test_data/jobseekers.csv', headers: true)
       end
       before do
         jobs_data.each do |row|
-          job = Job.new(name: row[:title])
-          
-          puts row[:required_skills].inspect
+          # TODO: Go make some kind of parsing/mapping rake task or lib/*
+          job = Job.create(name: row[:title])
+          row["required_skills"].split(", ").each do |required_skill|
+            job.job_skills << JobSkill.new(skill: required_skill.strip)
+          end
         end
+
+        job_seekers_data.each do |row|
+          # TODO: Go make some kind of parsing/mapping rake task or lib/*
+          job_seeker = JobSeeker.create(name: row[:title])
+          row["skills"].split(", ").each do |required_skill|
+            job_seeker.job_seeker_skills << JobSeekerSkill.new(skill: required_skill.strip)
+          end
+        end
+
         # create(:job, name: 'Ruby Developer', job_skills: [])
         # create(:job, name: '.NET Developer')
         # create(:job, name: 'C# Developer')
