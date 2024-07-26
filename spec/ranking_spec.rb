@@ -21,6 +21,7 @@ describe 'Application Output' do
         JobSeekerSkill.delete_all
 
         # Seed test data
+        # TODO: This is 'real' data, not the fake/test expectation data.
         jobs_data.each do |row|
           # TODO: Go make some kind of parsing/mapping rake task or lib/*
           job = Job.create!(name: row['title'])
