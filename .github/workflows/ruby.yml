@@ -3,18 +3,6 @@ name: CI
 on: [push]
 
 jobs:
-  contributors:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install ruby version specified in .ruby-version
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Install gem bundle
-        run: |
-          gem install bundler
-          bundle install
   rspec:
     runs-on: ubuntu-latest
 
