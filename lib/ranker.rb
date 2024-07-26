@@ -3,29 +3,24 @@
 # A service for evaluating the ranked intersection of JobSeekers to Jobs
 # via the overlap of skills presented vs required.
 class Ranker
-  # Returns a descending order list of job seekers for a single, individual job
-  # based on skill overlap
-  def ranked_job_seekers_for_job(_job)
-    []
-  end
-
-  # Returns a descending order list of jobs for a single, individual job_seeker
-  # based on skill overlap
-  def ranked_jobs_for_job_seeker(_job_seeker)
-    []
-  end
-
   def ranked_jobs_by_job_seeker
     # Identify all skills where there is an overlap at all
     # TODO: Change to a left join if "0% overlap" is required
-    sql = "SELECT 
-        COUNT(0), job_skills.job_id, job_seeker_skills.job_seeker_id
+    # TODO: Go add scenic, flip this into a database view
+    sql = "SELECT
+        COUNT(DISTINCT job_seeker_skills.id) as matching_skills_count, job_seeker_skills.job_seeker_id, job_skills.job_id
     FROM job_seeker_skills
     JOIN job_skills ON job_seeker_skills.skill = job_skills.skill
-    GROUP BY job_skills.job_id"
-    job_seekers = ActiveRecord::Base.connection.select_all(sql).rows
-    puts job_seekers.inspect
+    GROUP BY job_skills.job_id
+    ORDER BY job_seeker_skills.job_seeker_id, COUNT(DISTINCT job_seeker_skills.id) DESC"
+    result = ActiveRecord::Base.connection.select_all(sql)
+    result.each do |row|
+      # TODO: Eager load
+      job_seeker = JobSeeker.find(row['job_seeker_id'])
+      job = Job.find(row['job_id'])
 
+      puts [job_seeker.name, job.name, row['matching_skills_count'], job.job_skills.collect(&:skill), job_seeker.job_seeker_skills.collect(&:skill)].inspect
+    end
     # jobseeker_id, jobseeker_name, job_id, job_title, matching_skill_count, matching_skill_percent
     # 1, Alice, 5, Ruby Developer, 3, 100
     # 1, Alice, 2, .NET Developer, 3, 75
