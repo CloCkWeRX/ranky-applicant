@@ -11,10 +11,10 @@ gem 'rails', '~> 7.1.3', '>= 7.1.3.4'
 gem 'sqlite3', '~> 1.4'
 
 group :development do
+  gem 'pry'
   gem 'rubocop'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
-  gem "pry"
 end
 
 group :test do
