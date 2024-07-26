@@ -14,7 +14,8 @@ describe 'Application Output' do
       before do
         jobs_data.each do |row|
           job = Job.new(name: row[:title])
-          puts row.inspect
+          
+          puts row[:required_skills].inspect
         end
         # create(:job, name: 'Ruby Developer', job_skills: [])
         # create(:job, name: '.NET Developer')
