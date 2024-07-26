@@ -1,11 +1,14 @@
-# frozen_string_literal: true
+source "https://rubygems.org"
 
-source 'https://rubygems.org'
+ruby "3.2.4"
 
-gem 'rspec'
+# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+gem "rails", "~> 7.1.3", ">= 7.1.3.4"
 
-gem 'rubocop', '~> 1.65'
+# Use sqlite3 as the database for Active Record
+gem "sqlite3", "~> 1.4"
 
-# Does this project need rails? Probably not.
-# However for expediency it has been included for simply the rails database migrations capabilities
-gem 'rails'
+group :test do
+  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  gem "rspec"
+end
