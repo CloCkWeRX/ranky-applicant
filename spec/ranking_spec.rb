@@ -33,6 +33,7 @@ describe 'Application Output' do
         before do
           @results = ranked_applicants.select { |row| row[:jobseeker_name] == 'Alice Seeker' }
         end
+
         it 'ranks highest for a Ruby Developer (100%) role' do
           # 1,Alice Seeker,"Ruby, SQL, Problem Solving"
           # 1,Ruby Developer,"Ruby, SQL, Problem Solving"
@@ -62,10 +63,19 @@ describe 'Application Output' do
         end
       end
 
-      it 'ranks Ian Jobhunter lowest for Python Developer' do
-        # 9,Ian Jobhunter,"JavaScript, React, Self Motivated"
-        # 9,Python Developer,"Python, SQL, Problem Solving, Self Motivated"
-        # 10,JavaScript Developer,"JavaScript, React, Node.js, Self Motivated"
+      describe 'Ian Jobhunter' do
+        before do
+          @results = ranked_applicants.select { |row| row[:jobseeker_name] == 'Ian Jobhunter' }
+        end
+
+        it 'ranks lowest for Python Developer' do
+          # 9,Ian Jobhunter,"JavaScript, React, Self Motivated"
+          # 9,Python Developer,"Python, SQL, Problem Solving, Self Motivated"
+          # 10,JavaScript Developer,"JavaScript, React, Node.js, Self Motivated"
+          expect(@results.last[:job_title]).to eq 'Python Developer'
+          expect(@results.last[:matching_skill_count]).to eq 1
+          expect(@results.last[:matching_skill_percent]).to eq 25
+        end
       end
     end
   end
