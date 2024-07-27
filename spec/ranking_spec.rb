@@ -59,7 +59,7 @@ describe 'Application Output' do
         it 'ranks by job id ascending when equally applicable' do
           expect(@results[4][:matching_skill_count]).to eq @results[5][:matching_skill_count] # Both have only 1/4 skills
 
-          expect(@results[4][:job_id] < @results[5][:job_id]).to eq true
+          expect(@results[4][:job_id] < @results[5][:job_id]).to be true
         end
       end
 
