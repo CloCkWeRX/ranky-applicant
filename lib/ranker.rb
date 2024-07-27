@@ -91,6 +91,8 @@ module Ranker
       end
     end
 
+    private
+
     def validate_jobs_data!
       expected_headers = %w[id title required_skills]
       raise IOError.new("jobs_data lacks expected headers: #{expected_headers.inspect}") unless jobs_data.headers == expected_headers
