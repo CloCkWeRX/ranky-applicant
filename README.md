@@ -17,3 +17,8 @@ Assuming the availability of ruby 3.2.4
     bundle exec rake db:create && bundle exec rake db:migrate
     bundle exec rake ranker:load_data[spec/test_data/]
     bundle exec rake ranker:display
+
+
+## Specification
+
+See [job_match_recommendation_challenge.md](job_match_recommendation_challenge.md)
