@@ -67,7 +67,13 @@ module Ranker
     end
 
     # For the provided data, populate to the database.
+    #
+    # Note that data is not loaded in a transaction; so
+    # invalid records may require a full `purge!`
     def load!
+      validate_jobs_data!
+      validate_jobseekers_data!
+
       @jobs_data.each do |row|
         job = Job.create!(name: row['title'])
         row['required_skills'].split(', ').each do |required_skill|
@@ -81,6 +87,14 @@ module Ranker
           job_seeker.job_seeker_skills << JobSeekerSkill.new(skill: required_skill.strip)
         end
       end
+    end
+
+    def validate_jobs_data!
+      expected_headers = %w[id title required_skills]
+      raise IOError.new("jobs_data lacks expected headers: #{expected_headers.inspect}") unless jobs_data.headers == expected_headers
+
+      expected_headers = %w[id name skills]
+      raise IOError.new("job_seekers_data lacks expected headers: #{expected_headers.inspect}") unless job_seekers_data.headers == expected_headers
     end
   end
 
