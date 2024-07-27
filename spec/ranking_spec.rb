@@ -5,7 +5,8 @@ require './spec/rails_helper'
 describe 'Application Output' do
   describe 'csv rendering' do
     context 'with the exact sample data' do
-      let(:ranker) { Ranker.new }
+      let(:ranker_service) { Ranker::RankerService.new }
+      let(:ranker_data_manager) { Ranker::DataManager.new(jobs_data, job_seekers_data) }
 
       let(:jobs_data) do
         CSV.read('./spec/test_data/jobs.csv', headers: true)
@@ -13,31 +14,10 @@ describe 'Application Output' do
       let(:job_seekers_data) do
         CSV.read('./spec/test_data/jobseekers.csv', headers: true)
       end
+
       before do
-        # Reset to blank slate
-        Job.delete_all
-        JobSeeker.delete_all
-        JobSkill.delete_all
-        JobSeekerSkill.delete_all
-
-        # Seed test data
-        # TODO: This is 'real' data, not the fake/test expectation data.
-        jobs_data.each do |row|
-          # TODO: Go make some kind of parsing/mapping rake task or lib/*
-          job = Job.create!(name: row['title'])
-          row['required_skills'].split(', ').each do |required_skill|
-            job.job_skills << JobSkill.new(skill: required_skill.strip)
-          end
-        end
-
-        job_seekers_data.each do |row|
-          # TODO: Go make some kind of parsing/mapping rake task or lib/*
-          job_seeker = JobSeeker.create!(name: row['name'])
-          row['skills'].split(', ').each do |required_skill|
-            job_seeker.job_seeker_skills << JobSeekerSkill.new(skill: required_skill.strip)
-          end
-        end
-
+        ranker_data_manager.purge!
+        ranker_data_manager.load!
         # create(:job, name: 'Ruby Developer', job_skills: [])
         # create(:job, name: '.NET Developer')
         # create(:job, name: 'C# Developer')
@@ -50,7 +30,7 @@ describe 'Application Output' do
       end
 
       it 'renders a CSV formatted list of applicants' do
-        puts ranker.ranked_jobs_by_job_seeker.inspect
+        puts ranker_service.ranked_jobs_by_job_seeker.inspect
         # jobseeker_id, jobseeker_name, job_id, job_title, matching_skill_count, matching_skill_percent
         # 1, Alice, 5, Ruby Developer, 3, 100
         # 1, Alice, 2, .NET Developer, 3, 75
