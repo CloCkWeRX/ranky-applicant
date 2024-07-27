@@ -3,6 +3,8 @@
 module Ranker
   # A service for evaluating the ranked intersection of JobSeekers to Jobs
   # via the overlap of skills presented vs required.
+  #
+  # TODO: At a later time, inject a strategy pattern for different matching strategies
   class RankerService
     # Return a ranked, ordered result set of (roughly)
     #
@@ -13,6 +15,9 @@ module Ranker
     # 1, Alice, 4, Dev Ops Engineer, 4, 50
     # 2, Bob, 3, C++ Developer, 4, 100
     # 2, Bob, 1, Go Developer, 3, 75
+    #
+    # The matching skill percentage is calculated against the total skills required for the job (best applicant for job)
+    # rather than the best matching job for the applicant (best job for applicant)
     #
     # Identify all skills where there is an overlap at all
     # - Find all job seekers' skills
@@ -54,8 +59,7 @@ module Ranker
   # This tooling does not support updating, but instead resets the entire state to empty and
   # loads data.
   class DataManager
-    # TODO: Violates SRP slightly. If jobs data and job seeker data changed at different rates
-    # This class should be split in two
+    # TODO: Violates SRP slightly. If jobs data and job seeker data changed at different rates, this class should be split in two
     def initialize(jobs_data, job_seekers_data)
       raise ArgumentError.new("Expected jobs_data to be a CSV::Table, got #{jobs_data.class.name}") unless jobs_data.is_a?(CSV::Table)
       raise ArgumentError.new("Expected job_seekers_data to be a CSV::Table, got #{job_seekers_data.class.name}") unless job_seekers_data.is_a?(CSV::Table)
@@ -112,5 +116,8 @@ module Ranker
 
   # A class for serializing data structures as CSV format
   class CSVSerializer
+    def intiialize(resultset); end
+
+    def to_s; end
   end
 end

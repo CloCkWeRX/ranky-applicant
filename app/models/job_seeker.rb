@@ -4,7 +4,7 @@
 #
 # Has one or more "skills"
 class JobSeeker < ApplicationRecord
-  has_many :job_seeker_skills, dependent: :destroy
+  has_many :job_seeker_skills, dependent: :destroy, counter_cache: true
 
   validates :name, presence: true
 end
