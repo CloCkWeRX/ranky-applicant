@@ -1,24 +1,6 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A command line application running on sqlite to rank job seekers to jobs.
 
-Things you may want to cover:
+The recommended way to trial this is to start a new Codespace (Code > Codespaces > Create a codespace on main)
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
