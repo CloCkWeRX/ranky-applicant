@@ -61,8 +61,8 @@ module Ranker
   class DataManager
     # TODO: Violates SRP slightly. If jobs data and job seeker data changed at different rates, this class should be split in two
     def initialize(jobs_data, job_seekers_data)
-      raise ArgumentError.new("Expected jobs_data to be a CSV::Table, got #{jobs_data.class.name}") unless jobs_data.is_a?(CSV::Table)
-      raise ArgumentError.new("Expected job_seekers_data to be a CSV::Table, got #{job_seekers_data.class.name}") unless job_seekers_data.is_a?(CSV::Table)
+      raise ArgumentError, "Expected jobs_data to be a CSV::Table, got #{jobs_data.class.name}" unless jobs_data.is_a?(CSV::Table)
+      raise ArgumentError, "Expected job_seekers_data to be a CSV::Table, got #{job_seekers_data.class.name}" unless job_seekers_data.is_a?(CSV::Table)
 
       @jobs_data = jobs_data
       @job_seekers_data = job_seekers_data
@@ -105,12 +105,12 @@ module Ranker
 
     def validate_jobs_data!
       expected_headers = %w[id title required_skills]
-      raise IOError.new("jobs_data lacks expected headers: #{expected_headers.inspect}") unless jobs_data.headers == expected_headers
+      raise IOError, "jobs_data lacks expected headers: #{expected_headers.inspect}" unless jobs_data.headers == expected_headers
     end
 
     def validate_jobseekers_data!
       expected_headers = %w[id name skills]
-      raise IOError.new("job_seekers_data lacks expected headers: #{expected_headers.inspect}") unless job_seekers_data.headers == expected_headers
+      raise IOError, "job_seekers_data lacks expected headers: #{expected_headers.inspect}" unless job_seekers_data.headers == expected_headers
     end
   end
 
