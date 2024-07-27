@@ -118,9 +118,9 @@ module Ranker
   class CSVSerializer
     def initialize(results)
       @results = results
-   end
+    end
 
-   attr_accessor :results
+    attr_accessor :results
 
     # Output formatted resultset
     #
@@ -135,7 +135,8 @@ module Ranker
     # TODO: For larger resultsets, ideally this would be streaming / yield to output line by line
     # TODO: Assert the resultset constains the headers expected in all cases.
     def to_s
-      return "Empty resultset" unless results.any?
+      return 'Empty resultset' unless results.any?
+
       headers = %w[jobseeker_id jobseeker_name job_id job_title matching_skill_count matching_skill_percent]
 
       CSV.generate do |csv|

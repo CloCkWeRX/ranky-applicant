@@ -28,8 +28,8 @@ describe 'Application Output' do
       end
 
       it 'renders a CSV formatted list of applicants' do
-        expect(output.split("\n")[0]).to eq("jobseeker_id,jobseeker_name,job_id,job_title,matching_skill_count,matching_skill_percent")
-        
+        expect(output.split("\n")[0]).to eq('jobseeker_id,jobseeker_name,job_id,job_title,matching_skill_count,matching_skill_percent')
+
         expect(output.split("\n")[104]).to match(/\d+,JavaScript Developer,\d+,JavaScript Developer,4,100/)
         expect(output.split("\n")[105]).to match(/\d+,JavaScript Developer,\d+,Frontend Developer,2,50/)
         expect(output.split("\n")[106]).to match(/\d+,JavaScript Developer,\d+,Fullstack Developer,2,33/)
