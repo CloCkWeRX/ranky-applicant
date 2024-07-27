@@ -18,6 +18,9 @@ describe 'Application Output' do
       let(:ranked_applicants) do
         ranker_service.ranked_jobs_by_job_seeker
       end
+      let(:output) do
+        Ranker::CSVSerializer.new(ranked_applicants).to_s
+      end
 
       before do
         ranker_data_manager.purge!
@@ -25,7 +28,14 @@ describe 'Application Output' do
       end
 
       it 'renders a CSV formatted list of applicants' do
-        # puts ranked_applicants.inspect
+        expect(output.split("\n")[0]).to eq("jobseeker_id,jobseeker_name,job_id,job_title,matching_skill_count,matching_skill_percent")
+        
+        expect(output.split("\n")[104]).to match(/\d+,JavaScript Developer,\d+,JavaScript Developer,4,100/)
+        expect(output.split("\n")[105]).to match(/\d+,JavaScript Developer,\d+,Frontend Developer,2,50/)
+        expect(output.split("\n")[106]).to match(/\d+,JavaScript Developer,\d+,Fullstack Developer,2,33/)
+        expect(output.split("\n")[107]).to match(/\d+,JavaScript Developer,\d+,Backend Developer,1,25/)
+        expect(output.split("\n")[108]).to match(/\d+,JavaScript Developer,\d+,Web Developer,1,25/)
+        expect(output.split("\n")[109]).to match(/\d+,JavaScript Developer,\d+,Python Developer,1,25/)
       end
 
       describe 'Alice Seeker' do
