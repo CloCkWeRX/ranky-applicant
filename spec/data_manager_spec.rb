@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './lib/rails_helper'
+require './spec/rails_helper'
 
 describe Ranker::DataManager do
   describe '#purge!' do

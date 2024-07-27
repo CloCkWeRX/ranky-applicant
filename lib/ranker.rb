@@ -58,6 +58,8 @@ module Ranker
       @job_seekers_data = job_seekers_data
     end
 
+    attr_accessor :jobs_data, :job_seekers_data
+
     # Purges all existing data
     def purge!
       Job.delete_all
@@ -74,14 +76,14 @@ module Ranker
       validate_jobs_data!
       validate_jobseekers_data!
 
-      @jobs_data.each do |row|
+      jobs_data.each do |row|
         job = Job.create!(name: row['title'])
         row['required_skills'].split(', ').each do |required_skill|
           job.job_skills << JobSkill.new(skill: required_skill.strip)
         end
       end
 
-      @job_seekers_data.each do |row|
+      job_seekers_data.each do |row|
         job_seeker = JobSeeker.create!(name: row['name'])
         row['skills'].split(', ').each do |required_skill|
           job_seeker.job_seeker_skills << JobSeekerSkill.new(skill: required_skill.strip)
@@ -92,7 +94,9 @@ module Ranker
     def validate_jobs_data!
       expected_headers = %w[id title required_skills]
       raise IOError.new("jobs_data lacks expected headers: #{expected_headers.inspect}") unless jobs_data.headers == expected_headers
+    end
 
+    def validate_jobseekers_data!
       expected_headers = %w[id name skills]
       raise IOError.new("job_seekers_data lacks expected headers: #{expected_headers.inspect}") unless job_seekers_data.headers == expected_headers
     end
