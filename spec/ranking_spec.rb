@@ -4,7 +4,7 @@ require './spec/rails_helper'
 
 describe 'Application Output' do
   describe 'csv rendering' do
-    context "with the primary sample data" do
+    context 'with the primary sample data' do
       let(:bob) { create(:job_seeker, name: 'Bob', skills: []) }
       let(:alice) { create(:job_seeker, name: 'Alice') }
 
@@ -37,13 +37,44 @@ describe 'Application Output' do
         CSV.read('./spec/test_data/jobseekers.csv', headers: true)
       end
 
+      let(:ranked_applicants) do
+        ranker_service.ranked_jobs_by_job_seeker
+      end
+
       before do
         ranker_data_manager.purge!
         ranker_data_manager.load!
       end
 
       it 'renders a CSV formatted list of applicants' do
-        puts ranker_service.ranked_jobs_by_job_seeker.inspect
+        # puts ranked_applicants.inspect
+      end
+
+      describe 'Alice Seeker' do
+        before do
+          @results = ranked_applicants.select { |row| row[:jobseeker_name] == 'Alice Seeker' }
+        end
+        it 'ranks highest for a Ruby Developer (100%) role' do
+          # 1,Alice Seeker,"Ruby, SQL, Problem Solving"
+          # 1,Ruby Developer,"Ruby, SQL, Problem Solving"
+          # puts @results[0].inspect
+          expect(@results[0][:job_title]).to eq 'Ruby Developer'
+          expect(@results[0][:matching_skill_count]).to eq 3
+          expect(@results[0][:matching_skill_percent]).to eq 100
+        end
+
+        it 'ranks partially for a Fullstack Developer role' do
+          # 1,Alice Seeker,"Ruby, SQL, Problem Solving"
+          # 4,Fullstack Developer,"JavaScript, HTML/CSS, Node.js, Ruby, SQL, Communication"
+          expect(@results[1][:job_title]).to eq 'Fullstack Developer'
+          expect(@results[1][:matching_skill_count]).to eq 2
+          # expect(@results[1][:matching_skill_percent]).to eq 66 # TODO: Is this how many of the applicant's skills match, or how many of the job's skills match?
+        end
+      end
+      it 'ranks Ian Jobhunter lowest for Python Developer' do
+        # 9,Ian Jobhunter,"JavaScript, React, Self Motivated"
+        # 9,Python Developer,"Python, SQL, Problem Solving, Self Motivated"
+        # 10,JavaScript Developer,"JavaScript, React, Node.js, Self Motivated"
       end
     end
   end
