@@ -4,6 +4,8 @@ A command line application running on sqlite to rank job seekers to jobs.
 
 The recommended way to trial this is to start a new Codespace (Code > Codespaces > Create a codespace on main)
 
+![image](https://github.com/user-attachments/assets/8d330aa2-c645-4adc-8363-574e11883d55)
+
 ## Available rake tasks
 
     rake ranker:display                     # Output the ranked list of jobseekers to jobs from the loaded data
