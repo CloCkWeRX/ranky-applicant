@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require './spec/rails_helper'
-require 'pry'
 
 describe 'Application Output' do
   describe 'csv rendering' do
